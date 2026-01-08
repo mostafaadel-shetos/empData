@@ -462,6 +462,31 @@
                 return Object.values(stats).sort((a, b) => b.value - a.value);
             }, [data, groupByField]);
 
+            const downloadReport = () => {
+                const currentLabel = REPORT_FIELDS.find(f => f.key === groupByField)?.label || groupByField;
+                const csvRows = [];
+                // Add CSV Header
+                csvRows.push(`"Employee Name","${currentLabel}"`);
+
+                // Add Data Rows
+                reportData.forEach(group => {
+                    group.employees.forEach(empName => {
+                        csvRows.push(`"${empName}","${group.name}"`);
+                    });
+                });
+
+                // Trigger Download
+                const blob = new Blob([csvRows.join('\n')], { type: 'text/csv' });
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.setAttribute('hidden', '');
+                a.setAttribute('href', url);
+                a.setAttribute('download', `tempo_${groupByField}_report_${new Date().toISOString().split('T')[0]}.csv`);
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            };
+
             const COLORS = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899', '#6366f1', '#14b8a6'];
 
             return (
@@ -485,6 +510,13 @@
                                 >
                                     {REPORT_FIELDS.map(f => <option key={f.key} value={f.key}>{f.label}</option>)}
                                 </select>
+                                <button 
+                                    onClick={downloadReport} 
+                                    className="flex items-center gap-2 px-3 py-2 bg-white dark:bg-slate-700 hover:bg-slate-50 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 font-medium rounded-lg transition-colors text-sm shadow-sm border border-slate-200 dark:border-slate-600 ml-2"
+                                    title="Download Report CSV"
+                                >
+                                    <Download size={16} /> <span className="hidden sm:inline">Export</span>
+                                </button>
                             </div>
                         </div>
 
@@ -1383,12 +1415,6 @@
                                 <Briefcase size={14} className="text-slate-400 dark:text-slate-500 shrink-0 mt-0.5" /> 
                                 <span>{employee.title || employee.position || '\u00A0'}</span>
                             </p>
-                            {employee.department && (
-                                <p className="text-xs text-slate-400 dark:text-slate-500 flex items-center gap-1 truncate w-full">
-                                    <Building size={12} className="shrink-0" />
-                                    <span>{employee.department}</span>
-                                </p>
-                            )}
                         </div>
 
                         {/* 4. Joining Date & Tenure */}
@@ -1468,13 +1494,12 @@
                             <div className="font-medium text-slate-900 dark:text-slate-100 truncate">{employee.name}</div>
                             <div className="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
                                 <span>ID: {employee.id}</span>
-                                {employee.hr_id && <span className="text-blue-500">HR: {employee.hr_id}</span>}
                             </div>
                         </div>
                     </div>
                 </td>
-                <td className="w-[10%] px-4 py-4 text-center align-middle text-sm text-slate-600 dark:text-slate-300 font-mono">
-                    {employee.hr_id || '-'}
+                <td className="w-[15%] px-6 py-4 text-left align-middle text-sm text-slate-600 dark:text-slate-300 font-medium truncate max-w-[200px]" title={employee.tempo_email}>
+                    {employee.tempo_email || '-'}
                 </td>
                 <td className="w-[15%] px-6 py-4 text-sm text-slate-600 dark:text-slate-300 text-center align-middle">
                     <div className="font-medium text-slate-700 dark:text-slate-200 min-h-[1.25rem] truncate">{employee.title || '\u00A0'}</div>
@@ -1941,7 +1966,7 @@
                                                <thead className="bg-slate-50 dark:bg-slate-900 font-semibold text-slate-500 dark:text-slate-400 border-b border-slate-200 dark:border-slate-700">
                                                    <tr>
                                                        <th className="w-[20%] px-6 py-4 text-left align-middle uppercase tracking-wider text-xs">Name</th>
-                                                       <th className="w-[10%] px-4 py-4 text-center align-middle uppercase tracking-wider text-xs">HR ID</th>
+                                                       <th className="w-[15%] px-6 py-4 text-left align-middle uppercase tracking-wider text-xs">Tempo Email</th>
                                                        <th className="w-[15%] px-6 py-4 text-center align-middle uppercase tracking-wider text-xs">Title</th>
                                                        <th className="w-[15%] px-6 py-4 text-center align-middle uppercase tracking-wider text-xs">Supervisor</th>
                                                        <th className="w-[10%] px-6 py-4 text-center align-middle uppercase tracking-wider text-xs">Joined</th>
