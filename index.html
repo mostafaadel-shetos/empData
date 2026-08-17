@@ -70307,6 +70307,105 @@ var require_app = __commonJS({
         { value: 10, label: "November" },
         { value: 11, label: "December" }
       ];
+      const downloadAttritionCSV = () => {
+        const headers = [
+          "ID",
+          "HR ID",
+          "Name",
+          "Title",
+          "Channel",
+          "Sub Channel",
+          "Supervisor",
+          "Joining Date",
+          "End Date",
+          "Status",
+          "Reason",
+          "Rehire Status",
+          "Termination Status",
+          "Status Reason",
+          "Regretted",
+          "Tempo Email",
+          "Personal Email",
+          "Phone",
+          "Nationality",
+          "Wave",
+          "DOB",
+          "Religion",
+          "Gender",
+          "Education",
+          "Area",
+          "Address",
+          "Headset SN",
+          "Laptop Received",
+          "Laptop SN",
+          "Department",
+          "Work Type",
+          "Third Party",
+          "Work Location",
+          "Emergency Contact Name",
+          "Emergency Contact Phone",
+          "Anniversary",
+          "T-Shirt Size",
+          "Shoe Size",
+          "Source"
+        ];
+        const csvRows = [
+          headers.join(","),
+          ...inactiveData.map((row) => {
+            const values = [
+              row.id,
+              row.hr_id,
+              row.name,
+              row.title,
+              row.channel,
+              row.sub_channel,
+              row.team_lead,
+              row.joining_date,
+              row.end_date,
+              row.status,
+              row.reason,
+              row.rehire_status,
+              row.termination_status,
+              row.status_reason,
+              row.regretted,
+              row.tempo_email,
+              row.personal_email,
+              row.phone,
+              row.nationality,
+              row.wave,
+              row.dob,
+              row.religion,
+              row.gender,
+              row.education,
+              row.area,
+              row.address || row.Address,
+              row.headset_sn,
+              row.laptop_received,
+              row.laptop_sn,
+              row.department,
+              row.work_type,
+              row.third_party,
+              row.work_location,
+              row.emergency_contact_name,
+              row.emergency_contact_phone,
+              row.anniversary,
+              row.tshirt_size,
+              row.shoe_size,
+              row.source
+            ];
+            return values.map((val) => `"${(val || "").toString().replace(/"/g, '""')}"`).join(",");
+          })
+        ];
+        const blob = new Blob([csvRows.join("\n")], { type: "text/csv" });
+        const url = window.URL.createObjectURL(blob);
+        const a2 = document.createElement("a");
+        a2.setAttribute("hidden", "");
+        a2.setAttribute("href", url);
+        a2.setAttribute("download", `tempo_attrition_${(/* @__PURE__ */ new Date()).toISOString().split("T")[0]}.csv`);
+        document.body.appendChild(a2);
+        a2.click();
+        document.body.removeChild(a2);
+      };
       let viewLabel = "Source";
       if (filter === "MX") viewLabel = "Title (MX)";
       if (filter === "Tempo Tech") viewLabel = "Department (Tempo Tech)";
@@ -70337,6 +70436,18 @@ var require_app = __commonJS({
         },
         /* @__PURE__ */ import_react42.default.createElement("option", { value: "All" }, "All Months"),
         months.map((m) => /* @__PURE__ */ import_react42.default.createElement("option", { key: m.value, value: m.value }, m.label))
+      ), /* @__PURE__ */ import_react42.default.createElement(
+        "button",
+        {
+          onClick: downloadAttritionCSV,
+          disabled: inactiveData.length === 0,
+          className: `flex items-center gap-2 px-3 py-2 rounded-lg transition-colors text-sm font-medium shadow-sm border ${inactiveData.length === 0 ? "bg-slate-100 dark:bg-slate-700/50 text-slate-400 dark:text-slate-500 border-slate-200 dark:border-slate-600 cursor-not-allowed" : "bg-white dark:bg-slate-700 hover:bg-slate-50 dark:hover:bg-slate-600 text-slate-700 dark:text-slate-200 border-slate-200 dark:border-slate-600 cursor-pointer"}`,
+          title: inactiveData.length === 0 ? "No data to export" : "Export filtered attrition data as CSV"
+        },
+        /* @__PURE__ */ import_react42.default.createElement(Download, { size: 16 }),
+        " ",
+        /* @__PURE__ */ import_react42.default.createElement("span", { className: "hidden sm:inline" }, "Export"),
+        /* @__PURE__ */ import_react42.default.createElement("span", { className: "inline sm:hidden" }, inactiveData.length)
       ))), /* @__PURE__ */ import_react42.default.createElement("div", { className: "grid grid-cols-1 md:grid-cols-3 gap-4" }, /* @__PURE__ */ import_react42.default.createElement("div", { className: "bg-slate-50 dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm flex items-center justify-between" }, /* @__PURE__ */ import_react42.default.createElement("div", null, /* @__PURE__ */ import_react42.default.createElement("p", { className: "text-xs text-slate-500 dark:text-slate-400 font-bold uppercase" }, "Total Attrition"), /* @__PURE__ */ import_react42.default.createElement("p", { className: "text-2xl font-bold text-slate-800 dark:text-white" }, inactiveData.length)), /* @__PURE__ */ import_react42.default.createElement("div", { className: "p-3 bg-red-100 dark:bg-red-900/30 text-red-600 rounded-lg" }, /* @__PURE__ */ import_react42.default.createElement(UserX, { size: 24 }))), /* @__PURE__ */ import_react42.default.createElement("div", { className: "bg-slate-50 dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm flex items-center justify-between" }, /* @__PURE__ */ import_react42.default.createElement("div", null, /* @__PURE__ */ import_react42.default.createElement("p", { className: "text-xs text-slate-500 dark:text-slate-400 font-bold uppercase" }, "Resigned"), /* @__PURE__ */ import_react42.default.createElement("p", { className: "text-2xl font-bold text-slate-800 dark:text-white" }, inactiveData.filter((e) => (e.status || "").toLowerCase().includes("resigned")).length)), /* @__PURE__ */ import_react42.default.createElement("div", { className: "p-3 bg-orange-100 dark:bg-orange-900/30 text-orange-600 rounded-lg" }, /* @__PURE__ */ import_react42.default.createElement(Footprints, { size: 24 }))), /* @__PURE__ */ import_react42.default.createElement("div", { className: "bg-slate-50 dark:bg-slate-800 p-4 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm flex items-center justify-between" }, /* @__PURE__ */ import_react42.default.createElement("div", null, /* @__PURE__ */ import_react42.default.createElement("p", { className: "text-xs text-slate-500 dark:text-slate-400 font-bold uppercase" }, "Terminated"), /* @__PURE__ */ import_react42.default.createElement("p", { className: "text-2xl font-bold text-slate-800 dark:text-white" }, inactiveData.filter((e) => (e.status || "").toLowerCase().includes("terminated")).length)), /* @__PURE__ */ import_react42.default.createElement("div", { className: "p-3 bg-slate-100 dark:bg-slate-700 text-slate-600 rounded-lg" }, /* @__PURE__ */ import_react42.default.createElement(WifiOff, { size: 24 })))), /* @__PURE__ */ import_react42.default.createElement("div", { className: "grid grid-cols-1 lg:grid-cols-2 gap-6" }, /* @__PURE__ */ import_react42.default.createElement("div", { className: "bg-slate-50 dark:bg-slate-800 p-6 rounded-xl border-2 border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden" }, /* @__PURE__ */ import_react42.default.createElement("h3", { className: "text-lg font-bold text-slate-800 dark:text-white mb-4 flex items-center gap-2" }, /* @__PURE__ */ import_react42.default.createElement(BarChart3, { size: 20, className: "text-red-500" }), " Attrition by ", viewLabel), /* @__PURE__ */ import_react42.default.createElement("div", { className: "overflow-x-auto w-full pb-1" }, /* @__PURE__ */ import_react42.default.createElement("div", { style: { width: `${minGroupChartWidth}px`, height: "300px" } }, /* @__PURE__ */ import_react42.default.createElement(ResponsiveContainer, { width: "100%", height: "100%" }, /* @__PURE__ */ import_react42.default.createElement(BarChart, { data: groupStats, margin: { top: 10, right: 30, left: 0, bottom: 0 } }, /* @__PURE__ */ import_react42.default.createElement(CartesianGrid, { strokeDasharray: "3 3", opacity: 0.2 }), /* @__PURE__ */ import_react42.default.createElement(XAxis, { dataKey: "name", stroke: "#94a3b8", fontSize: 12, tickLine: false, axisLine: false, tick: /* @__PURE__ */ import_react42.default.createElement(CustomXAxisTick, null), interval: 0 }), /* @__PURE__ */ import_react42.default.createElement(YAxis, { stroke: "#94a3b8", fontSize: 12, tickLine: false, axisLine: false }), /* @__PURE__ */ import_react42.default.createElement(Tooltip, { content: /* @__PURE__ */ import_react42.default.createElement(CustomTooltip, null), cursor: { fill: "transparent" } }), /* @__PURE__ */ import_react42.default.createElement(Bar, { dataKey: "total", fill: "#ef4444", radius: [4, 4, 0, 0], maxBarSize: 50 }, /* @__PURE__ */ import_react42.default.createElement(LabelList, { dataKey: "total", position: "center", style: { fill: "#ffffff", fontSize: "12px", fontWeight: "bold" } }))))))), /* @__PURE__ */ import_react42.default.createElement("div", { className: "bg-slate-50 dark:bg-slate-800 p-6 rounded-xl border-2 border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden" }, /* @__PURE__ */ import_react42.default.createElement("h3", { className: "text-lg font-bold text-slate-800 dark:text-white mb-4 flex items-center gap-2" }, /* @__PURE__ */ import_react42.default.createElement(Activity, { size: 20, className: "text-orange-500" }), " Attrition Trend (MoM)"), momStats.length > 0 ? /* @__PURE__ */ import_react42.default.createElement("div", { className: "overflow-x-auto w-full pb-1" }, /* @__PURE__ */ import_react42.default.createElement("div", { style: { width: `${minMomChartWidth}px`, height: "300px" } }, /* @__PURE__ */ import_react42.default.createElement(ResponsiveContainer, { width: "100%", height: "100%" }, /* @__PURE__ */ import_react42.default.createElement(BarChart, { data: momStats, margin: { top: 10, right: 30, left: 0, bottom: 0 } }, /* @__PURE__ */ import_react42.default.createElement(CartesianGrid, { strokeDasharray: "3 3", opacity: 0.2 }), /* @__PURE__ */ import_react42.default.createElement(XAxis, { dataKey: "name", stroke: "#94a3b8", fontSize: 12, tickLine: false, axisLine: false }), /* @__PURE__ */ import_react42.default.createElement(YAxis, { stroke: "#94a3b8", fontSize: 12, tickLine: false, axisLine: false }), /* @__PURE__ */ import_react42.default.createElement(Tooltip, { content: /* @__PURE__ */ import_react42.default.createElement(CustomTooltip, null), cursor: { fill: "transparent" } }), /* @__PURE__ */ import_react42.default.createElement(Bar, { dataKey: "total", fill: "#f97316", radius: [4, 4, 0, 0], maxBarSize: 50 }, /* @__PURE__ */ import_react42.default.createElement(LabelList, { dataKey: "total", position: "center", style: { fill: "#ffffff", fontSize: "12px", fontWeight: "bold" } })))))) : /* @__PURE__ */ import_react42.default.createElement("div", { className: "h-[300px] flex items-center justify-center text-slate-400 italic" }, "No records matching criteria to plot trend."))), /* @__PURE__ */ import_react42.default.createElement("div", { className: "grid grid-cols-1 lg:grid-cols-2 gap-6" }, /* @__PURE__ */ import_react42.default.createElement("div", { className: "bg-slate-50 dark:bg-slate-800 p-6 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm" }, /* @__PURE__ */ import_react42.default.createElement("h3", { className: "text-lg font-bold text-slate-800 dark:text-white mb-6 flex items-center gap-2" }, /* @__PURE__ */ import_react42.default.createElement(PieChart, { size: 20, className: "text-blue-500" }), " Attrition by Status"), /* @__PURE__ */ import_react42.default.createElement("div", { className: "h-[300px]" }, /* @__PURE__ */ import_react42.default.createElement(ResponsiveContainer, { width: "100%", height: "100%" }, /* @__PURE__ */ import_react42.default.createElement(PieChart2, null, /* @__PURE__ */ import_react42.default.createElement(
         Pie,
         {
