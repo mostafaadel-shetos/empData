@@ -49,6 +49,8 @@
         .dark .scrollbar-thin::-webkit-scrollbar-thumb { background-color: #475569; }
         .loader { border: 3px solid #f3f3f3; border-radius: 50%; border-top: 3px solid #3b82f6; width: 20px; height: 20px; animation: spin 1s linear infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 20% { transform: translateX(-6px); } 40% { transform: translateX(6px); } 60% { transform: translateX(-4px); } 80% { transform: translateX(4px); } }
+        .animate-shake { animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both; }
 
         /* Remove focus outline/box on click for charts */
         *:focus { outline: none !important; }
@@ -70063,6 +70065,20 @@ var require_app = __commonJS({
       if (!isOpen) return null;
       return /* @__PURE__ */ import_react42.default.createElement("div", { className: "fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-in fade-in duration-200" }, /* @__PURE__ */ import_react42.default.createElement("div", { className: "bg-slate-50 dark:bg-slate-800 rounded-xl shadow-2xl max-w-sm w-full p-6 border border-slate-200 dark:border-slate-700 transform scale-100 animate-in zoom-in-95 duration-200" }, /* @__PURE__ */ import_react42.default.createElement("div", { className: "flex flex-col items-center text-center gap-4" }, /* @__PURE__ */ import_react42.default.createElement("div", { className: "w-12 h-12 rounded-full bg-red-100 dark:bg-red-900/30 flex items-center justify-center text-red-600 dark:text-red-400" }, /* @__PURE__ */ import_react42.default.createElement(Trash2, { size: 24 })), /* @__PURE__ */ import_react42.default.createElement("h3", { className: "text-lg font-bold text-slate-900 dark:text-white" }, "Delete Employee?"), /* @__PURE__ */ import_react42.default.createElement("p", { className: "text-sm text-slate-500 dark:text-slate-400" }, message || "Are you sure you want to delete this record? This action cannot be undone."), /* @__PURE__ */ import_react42.default.createElement("div", { className: "flex gap-3 w-full mt-2" }, /* @__PURE__ */ import_react42.default.createElement("button", { onClick: onClose, className: "flex-1 px-4 py-2 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-lg font-medium hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors" }, "Cancel"), /* @__PURE__ */ import_react42.default.createElement("button", { onClick: onConfirm, className: "flex-1 px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg font-medium transition-colors shadow-sm" }, "Delete")))));
     };
+    var PasswordModal = ({ isOpen, onClose, onSubmit, error: error2 }) => {
+      const [pwd, setPwd] = (0, import_react42.useState)("");
+      const inputRef = (0, import_react42.useRef)(null);
+      (0, import_react42.useEffect)(() => {
+        if (isOpen) {
+          setPwd("");
+          setTimeout(() => inputRef.current && inputRef.current.focus(), 50);
+        }
+      }, [isOpen]);
+      if (!isOpen) return null;
+      const doSubmit = () => onSubmit(pwd);
+      const onKeyDown = (e) => { if (e.key === "Enter") doSubmit(); };
+      return /* @__PURE__ */ import_react42.default.createElement("div", { className: "fixed inset-0 z-[70] flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-in fade-in duration-200" }, /* @__PURE__ */ import_react42.default.createElement("div", { className: "bg-slate-50 dark:bg-slate-800 rounded-xl shadow-2xl max-w-md w-full p-6 border border-slate-200 dark:border-slate-700 transform scale-100 animate-in zoom-in-95 duration-200" }, /* @__PURE__ */ import_react42.default.createElement("div", { className: "flex flex-col items-center text-center gap-5" }, /* @__PURE__ */ import_react42.default.createElement("div", { className: "w-14 h-14 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 dark:text-blue-400" }, /* @__PURE__ */ import_react42.default.createElement(AlertTriangle, { size: 28 })), /* @__PURE__ */ import_react42.default.createElement("div", { className: "space-y-1.5 w-full" }, /* @__PURE__ */ import_react42.default.createElement("h3", { className: "text-xl font-bold text-slate-900 dark:text-white" }, "Admin Authorization Required"), /* @__PURE__ */ import_react42.default.createElement("p", { className: "text-sm text-slate-500 dark:text-slate-400" }, "Please enter admin password for updating employee info")), /* @__PURE__ */ import_react42.default.createElement("input", { ref: inputRef, type: "password", value: pwd, onChange: (e) => setPwd(e.target.value), onKeyDown, placeholder: "Enter admin password", autoComplete: "off", className: `w-full px-4 py-3 bg-white dark:bg-slate-700 border-2 rounded-xl text-base focus:ring-2 focus:ring-blue-500 outline-none text-slate-900 dark:text-slate-100 placeholder:text-slate-400 dark:placeholder:text-slate-500 transition-colors ${error2 ? "border-red-400 dark:border-red-500 focus:ring-red-500 animate-shake" : "border-slate-200 dark:border-slate-600"}` }), error2 && /* @__PURE__ */ import_react42.default.createElement("div", { className: "w-full flex items-center gap-2 px-3 py-2 rounded-lg bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 text-sm font-medium" }, /* @__PURE__ */ import_react42.default.createElement(AlertTriangle, { size: 16 }), " Incorrect admin password. Access denied."), /* @__PURE__ */ import_react42.default.createElement("div", { className: "flex gap-3 w-full" }, /* @__PURE__ */ import_react42.default.createElement("button", { onClick: onClose, className: "flex-1 px-5 py-2.5 bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 rounded-xl font-semibold hover:bg-slate-200 dark:hover:bg-slate-600 transition-colors border border-slate-200 dark:border-slate-600" }, "Cancel"), /* @__PURE__ */ import_react42.default.createElement("button", { onClick: doSubmit, className: "flex-1 px-5 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white rounded-xl font-bold transition-all shadow-md hover:shadow-lg active:scale-95 duration-150" }, "Verify")))));
+    };
     var CustomXAxisTick = ({ x: x3, y: y3, payload }) => {
       if (!payload || !payload.value) return null;
       const text = payload.value.toString();
@@ -70755,6 +70771,30 @@ var require_app = __commonJS({
       const [darkMode, setDarkMode] = (0, import_react42.useState)(false);
       const [user, setUser] = (0, import_react42.useState)(null);
       const [permissionError, setPermissionError] = (0, import_react42.useState)(null);
+      const ADMIN_PASSWORD = "P@$$w0rd@Tempo-FiT";
+      const [passwordModalOpen, setPasswordModalOpen] = (0, import_react42.useState)(false);
+      const [passwordError, setPasswordError] = (0, import_react42.useState)(false);
+      const [pendingAuthAction, setPendingAuthAction] = (0, import_react42.useState)(null);
+      const closePasswordModal = () => {
+        setPasswordModalOpen(false);
+        setPasswordError(false);
+        setPendingAuthAction(null);
+      };
+      const handlePasswordSubmit = (pwd) => {
+        if (pwd === ADMIN_PASSWORD) {
+          const action = pendingAuthAction;
+          closePasswordModal();
+          if (action) action();
+        } else {
+          setPasswordError(true);
+          setTimeout(() => setPasswordError(false), 800);
+        }
+      };
+      const requireAdminAuth = (action) => {
+        setPendingAuthAction(() => action);
+        setPasswordError(false);
+        setPasswordModalOpen(true);
+      };
       (0, import_react42.useEffect)(() => {
         const savedTheme = localStorage.getItem("theme");
         const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
@@ -70834,7 +70874,7 @@ var require_app = __commonJS({
         return () => unsubscribe();
       }, [user]);
       const handleDelete = (id2) => {
-        setDeleteConfirm(id2);
+        requireAdminAuth(() => setDeleteConfirm(id2));
       };
       const confirmDelete = async () => {
         if (deleteConfirm) {
@@ -71004,8 +71044,10 @@ var require_app = __commonJS({
         document.body.removeChild(a2);
       };
       const openEditModal = (employee) => {
-        setModalEmployee(employee);
-        setModalMode("edit");
+        requireAdminAuth(() => {
+          setModalEmployee(employee);
+          setModalMode("edit");
+        });
       };
       const openViewModal = (employee) => {
         setModalEmployee(employee);
@@ -71057,7 +71099,7 @@ var require_app = __commonJS({
         if (selectedTitles.includes(title)) setSelectedTitles(selectedTitles.filter((item) => item !== title));
         else setSelectedTitles([...selectedTitles, title]);
       };
-      return /* @__PURE__ */ import_react42.default.createElement("div", { className: "min-h-screen bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100 font-sans transition-colors duration-200 flex flex-col" }, modalEmployee && /* @__PURE__ */ import_react42.default.createElement(EmployeeModal, { employee: modalEmployee, mode: modalMode, onClose: closeModal, onSave: handleUpdate }), /* @__PURE__ */ import_react42.default.createElement(ConfirmModal, { isOpen: !!deleteConfirm, onClose: () => setDeleteConfirm(null), onConfirm: confirmDelete, message: "Are you sure you want to permanently delete this employee record?" }), /* @__PURE__ */ import_react42.default.createElement("header", { className: "bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 sticky top-0 z-30 shadow-sm" }, permissionError && /* @__PURE__ */ import_react42.default.createElement("div", { className: "bg-red-500 text-white p-3 text-center text-sm font-bold flex items-center justify-center gap-2 animate-pulse" }, /* @__PURE__ */ import_react42.default.createElement(AlertTriangle, { size: 18 }), permissionError), /* @__PURE__ */ import_react42.default.createElement("div", { className: "w-[95%] mx-auto px-4 h-16 flex items-center justify-between" }, /* @__PURE__ */ import_react42.default.createElement("div", { className: "flex items-center gap-3" }, /* @__PURE__ */ import_react42.default.createElement("img", { src: "https://i.ibb.co/VcWmWNGT/nnn440rodh5cajnq6red.avif", alt: "Tempo Logo", className: "h-10 w-auto object-contain brightness-0 dark:invert" }), /* @__PURE__ */ import_react42.default.createElement("h1", { className: "text-lg font-bold text-slate-800 dark:text-white hidden sm:block" }, "Tempo Dashboard"), /* @__PURE__ */ import_react42.default.createElement("div", { className: "flex bg-slate-100 dark:bg-slate-700 p-1 rounded-lg ml-4" }, /* @__PURE__ */ import_react42.default.createElement("button", { onClick: () => setActiveTab("employees"), className: `px-4 lg:px-8 py-1.5 text-sm font-medium rounded-md transition-all ${activeTab === "employees" ? "bg-white dark:bg-slate-600 text-blue-600 dark:text-blue-400 shadow-sm" : "text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"}` }, "Employees"), /* @__PURE__ */ import_react42.default.createElement("button", { onClick: () => setActiveTab("reports"), className: `px-4 lg:px-8 py-1.5 text-sm font-medium rounded-md transition-all ${activeTab === "reports" ? "bg-white dark:bg-slate-600 text-purple-600 dark:text-purple-400 shadow-sm" : "text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"}` }, "Filter by"), /* @__PURE__ */ import_react42.default.createElement("button", { onClick: () => setActiveTab("analytics"), className: `px-4 lg:px-8 py-1.5 text-sm font-medium rounded-md transition-all ${activeTab === "analytics" ? "bg-white dark:bg-slate-600 text-emerald-600 dark:text-emerald-400 shadow-sm" : "text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"}` }, "Analytics"), /* @__PURE__ */ import_react42.default.createElement("button", { onClick: () => setActiveTab("attrition"), className: `px-4 lg:px-8 py-1.5 text-sm font-medium rounded-md transition-all ${activeTab === "attrition" ? "bg-white dark:bg-slate-600 text-red-600 dark:text-red-400 shadow-sm" : "text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"}` }, "Attrition"))), /* @__PURE__ */ import_react42.default.createElement("div", { className: "flex items-center gap-3" }, activeTab === "employees" && /* @__PURE__ */ import_react42.default.createElement(import_react42.default.Fragment, null, /* @__PURE__ */ import_react42.default.createElement("div", { className: "relative hidden md:block" }, /* @__PURE__ */ import_react42.default.createElement(Search, { className: "absolute left-3 top-1/2 -translate-y-1/2 text-slate-400", size: 18 }), /* @__PURE__ */ import_react42.default.createElement(
+      return /* @__PURE__ */ import_react42.default.createElement("div", { className: "min-h-screen bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100 font-sans transition-colors duration-200 flex flex-col" }, modalEmployee && /* @__PURE__ */ import_react42.default.createElement(EmployeeModal, { employee: modalEmployee, mode: modalMode, onClose: closeModal, onSave: handleUpdate }), /* @__PURE__ */ import_react42.default.createElement(ConfirmModal, { isOpen: !!deleteConfirm, onClose: () => setDeleteConfirm(null), onConfirm: confirmDelete, message: "Are you sure you want to permanently delete this employee record?" }), /* @__PURE__ */ import_react42.default.createElement(PasswordModal, { isOpen: passwordModalOpen, onClose: closePasswordModal, onSubmit: handlePasswordSubmit, error: passwordError }), /* @__PURE__ */ import_react42.default.createElement("header", { className: "bg-white dark:bg-slate-800 border-b border-slate-200 dark:border-slate-700 sticky top-0 z-30 shadow-sm" }, permissionError && /* @__PURE__ */ import_react42.default.createElement("div", { className: "bg-red-500 text-white p-3 text-center text-sm font-bold flex items-center justify-center gap-2 animate-pulse" }, /* @__PURE__ */ import_react42.default.createElement(AlertTriangle, { size: 18 }), permissionError), /* @__PURE__ */ import_react42.default.createElement("div", { className: "w-[95%] mx-auto px-4 h-16 flex items-center justify-between" }, /* @__PURE__ */ import_react42.default.createElement("div", { className: "flex items-center gap-3" }, /* @__PURE__ */ import_react42.default.createElement("img", { src: "https://i.ibb.co/VcWmWNGT/nnn440rodh5cajnq6red.avif", alt: "Tempo Logo", className: "h-10 w-auto object-contain brightness-0 dark:invert" }), /* @__PURE__ */ import_react42.default.createElement("h1", { className: "text-lg font-bold text-slate-800 dark:text-white hidden sm:block" }, "Tempo Dashboard"), /* @__PURE__ */ import_react42.default.createElement("div", { className: "flex bg-slate-100 dark:bg-slate-700 p-1 rounded-lg ml-4" }, /* @__PURE__ */ import_react42.default.createElement("button", { onClick: () => setActiveTab("employees"), className: `px-4 lg:px-8 py-1.5 text-sm font-medium rounded-md transition-all ${activeTab === "employees" ? "bg-white dark:bg-slate-600 text-blue-600 dark:text-blue-400 shadow-sm" : "text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"}` }, "Employees"), /* @__PURE__ */ import_react42.default.createElement("button", { onClick: () => setActiveTab("reports"), className: `px-4 lg:px-8 py-1.5 text-sm font-medium rounded-md transition-all ${activeTab === "reports" ? "bg-white dark:bg-slate-600 text-purple-600 dark:text-purple-400 shadow-sm" : "text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"}` }, "Filter by"), /* @__PURE__ */ import_react42.default.createElement("button", { onClick: () => setActiveTab("analytics"), className: `px-4 lg:px-8 py-1.5 text-sm font-medium rounded-md transition-all ${activeTab === "analytics" ? "bg-white dark:bg-slate-600 text-emerald-600 dark:text-emerald-400 shadow-sm" : "text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"}` }, "Analytics"), /* @__PURE__ */ import_react42.default.createElement("button", { onClick: () => setActiveTab("attrition"), className: `px-4 lg:px-8 py-1.5 text-sm font-medium rounded-md transition-all ${activeTab === "attrition" ? "bg-white dark:bg-slate-600 text-red-600 dark:text-red-400 shadow-sm" : "text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200"}` }, "Attrition"))), /* @__PURE__ */ import_react42.default.createElement("div", { className: "flex items-center gap-3" }, activeTab === "employees" && /* @__PURE__ */ import_react42.default.createElement(import_react42.default.Fragment, null, /* @__PURE__ */ import_react42.default.createElement("div", { className: "relative hidden md:block" }, /* @__PURE__ */ import_react42.default.createElement(Search, { className: "absolute left-3 top-1/2 -translate-y-1/2 text-slate-400", size: 18 }), /* @__PURE__ */ import_react42.default.createElement(
         "input",
         {
           type: "text",
