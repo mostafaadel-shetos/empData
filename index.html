@@ -70135,9 +70135,13 @@ var require_app = __commonJS({
         { label: "Status", key: "status" },
         { label: "Wave", key: "wave" }
       ];
+      const activeReportData = (0, import_react42.useMemo)(() => {
+        if (!data) return [];
+        return data.filter((e) => (e.status || "").toLowerCase().trim() === "active");
+      }, [data]);
       const reportData = (0, import_react42.useMemo)(() => {
         const stats = {};
-        data.forEach((e) => {
+        activeReportData.forEach((e) => {
           let key = e[groupByField];
           if (!key || typeof key === "string" && key.trim() === "") {
             key = "Unspecified";
@@ -70153,7 +70157,7 @@ var require_app = __commonJS({
           stats[key].employees.push(e.name);
         });
         return Object.values(stats).sort((a2, b2) => b2.value - a2.value);
-      }, [data, groupByField]);
+      }, [activeReportData, groupByField]);
       const downloadReport = () => {
         const currentLabel = REPORT_FIELDS.find((f) => f.key === groupByField)?.label || groupByField;
         const csvRows = [];
